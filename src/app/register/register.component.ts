@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, output } from '@angular
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppUser } from '../_models/appuser';
 import { AccountService } from '../_services/account.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,8 @@ model:any={};
 @Input() userListFromPraent:AppUser[];
 @Output() cancelRegister = new EventEmitter();
 
-constructor(private formBuilder:FormBuilder,private accountService:AccountService){
+constructor(private formBuilder:FormBuilder,
+  private accountService:AccountService,private toastr:ToastrService){
 
 }
 
@@ -33,7 +35,8 @@ register(){
     next : response => {
       console.log(response);
       this.cancel();
-    }
+    },
+    error:err => this.toastr.error(err.error)
   })
 }
 

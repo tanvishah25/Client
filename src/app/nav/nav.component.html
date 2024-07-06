@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="#">Dating App</a>
+      <a class="navbar-brand" routerLink="/">Dating App</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -8,23 +8,20 @@
       @if (accountService.currentUser()) {
         <ul class="navbar-nav me-auto mb-2 mb-md-0" >
             <li class="nav-item">
-              <a class="nav-link" >Matches</a>
+              <a class="nav-link" routerLink="/members" routerLinkActive="active">Matches</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" >Lists</a>
+              <a class="nav-link"  routerLink="/lists" routerLinkActive="active">Lists</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" >Messages</a>
+              <a class="nav-link"  routerLink="/messages" routerLinkActive="active">Messages</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" (click)="logout()">Logout</a>
-              </li>
           </ul>
       }
 
       @if(accountService.currentUser()){
         <div dropdown class ="dropdown">
-            <a dropdownToggle class="dropdown-toggle text-light text-decoration-none">Welcome User</a>
+            <a dropdownToggle class="dropdown-toggle text-light text-decoration-none">Welcome {{accountService.currentUser().username | titlecase}}</a>
             <div *dropdownMenu class="dropdown-menu">
                 <a class="dropdown-item">Edit Profile</a>
                 <div class="dropdown-divider"></div>
@@ -37,7 +34,7 @@
         <form [formGroup]="userForm" (ngSubmit)="login()" class="d-flex">
             <input class="form-control me-2"  placeholder="Username" formControlName="username" >
             <input class="form-control me-2" placeholder="Password"  type="password" formControlName="password">
-            <button class="btn btn-outline-success" type="submit">LOGIN</button>
+            <button class="btn btn-success" type="submit">LOGIN</button>
           </form>
       }
       </div>
