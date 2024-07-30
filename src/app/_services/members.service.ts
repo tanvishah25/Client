@@ -18,4 +18,8 @@ baseurl = environment.apiUrl;;
   getMember(username:string){
     return this.http.get<Member>(this.baseurl+'users/GetUserDetailsByUserName/' + username);
   }
+
+  updateMember(member:Member){
+    return this.http.put(this.baseurl+'users',member);
+  }
 }

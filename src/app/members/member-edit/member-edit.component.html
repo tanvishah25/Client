@@ -1,0 +1,85 @@
+@if(member){
+    <div class="row">
+        <div class="col-4">
+            <h1>Your Profile</h1>
+        </div>
+        <div class="col-8">
+           @if(memberForm.touched){
+            <div class="alert alert-info pb-0">
+                <p><strong>Information:
+                </strong>You have made changes. Any unsaved changes wil be lost.</p>
+            </div>
+           }
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <img src="{{member.photoUrl || '/assets/user.png'}}" 
+                alt="{{member.knownAs}}" class="card-img img-thumbnail"> 
+
+                <div class="card-body">
+                    <div>
+                        <strong>Location:</strong>
+                        <p>{{member.city}} , {{member.country}}</p>
+                    </div>
+                    <div>
+                        <strong>Age:</strong>
+                        <p>{{member.age}}</p>
+                    </div>
+                    <div>
+                        <strong>Last Active:</strong>
+                        <p>{{member.lastActive}}</p>
+                    </div>
+                    <div>
+                        <strong>Member since:</strong>
+                        <p>{{member.created}}</p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-group d-flex">
+                        <button [disabled] = "!memberForm.touched"
+                        form="editForm" 
+                        class="btn btn-success col-12" 
+                        type="submit">
+                        Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <tabset class="member-tabset"> 
+                <tab  heading="About {{member.knownAs}}">
+                    <form id= "editForm" [formGroup]="memberForm" (ngSubmit)="updateProfile()">
+                        <h4>Description</h4>
+                        <textarea 
+                                class="form-control"
+                                formControlName="introduction"
+                                rows="6">
+                        </textarea>
+                        <h4>Looking for</h4>
+                        <textarea 
+                                class="form-control"
+                                formControlName="lookingFor"
+                                rows="6">
+                        </textarea>
+                        <h4>Interests</h4>
+                        <textarea 
+                                class="form-control"
+                                formControlName="interests"
+                                rows="6">
+                        </textarea>
+                        <h4 class="mt-2">Location Details</h4>
+                        <div class="d-flex align-item-center">
+                            <label>City: </label>
+                            <input type="text"  class="form-control mx-2" formControlName="city">
+                            <label>Country: </label>
+                            <input type="text"  class="form-control mx-2" formControlName="country">
+                        </div>
+                    </form>
+                </tab>
+                <tab  heading="Edit Photos">
+                    Photo edit will go here
+                </tab>
+            </tabset>
+        </div>
+    </div>
+}
