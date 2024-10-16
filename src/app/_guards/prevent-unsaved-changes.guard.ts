@@ -5,6 +5,5 @@ export const preventUnsavedChangesGuard: CanDeactivateFn<MemberEditComponent> = 
   if(component.memberForm.touched){
     return confirm('Are you sure you want to continue? Any unsaved changes will be lost');
   }
-
   return true;
 };

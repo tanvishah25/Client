@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output, output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { AppUser } from '../_models/appuser';
 import { AccountService } from '../_services/account.service';
 import { ToastrService } from 'ngx-toastr';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,JsonPipe],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -25,8 +26,18 @@ constructor(private formBuilder:FormBuilder,
 ngOnInit(): void {
   this.registerForm = this.formBuilder.group({
     username:['',Validators.required],
-    password:['',Validators.required]
+    password:['',Validators.required],
+    confirmpassword:['',(Validators.required , this.matchValues("password"))]
+  });
+  this.registerForm.controls["password"].valueChanges.subscribe({
+    next : () => this.registerForm.controls["confirmpassword"].updateValueAndValidity()
   })
+}
+
+matchValues(matchto:string) : ValidatorFn{
+    return function(control:AbstractControl){
+      return control.value == control.parent?.get(matchto)?.value ? null : {isMatchibg:true}
+    }
 }
 
 register(){
