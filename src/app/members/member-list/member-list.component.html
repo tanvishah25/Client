@@ -1,8 +1,74 @@
 <div class="row">
     
-        @for(member of members; track member.id){
+    <div class="text-center mt-3">
+        <h2>Your matches - {{paginatedResults?.pagination?.totalItems}}</h2>
+    </div>
+    <div class="container mt-3">
+        <form [formGroup]="sortingForm" class="d-flex mb-3" (ngSubmit)="loadMembers()">
+            <div class="d-flex mx-2">
+                <label class="col-form-label">Age from: </label>
+                <input type="number" 
+                       class="form-control ms-1" 
+                       style="width: 70px;"
+                       formControlName="minAge">
+            </div>
+            <div class="d-flex mx-2">
+                <label class="col-form-label">Age to: </label>
+                <input type="number" 
+                       class="form-control ms-1" 
+                       style="width: 70px;"
+                       formControlName="maxAge">
+            </div>
+            <div class="d-flex mx-2">
+                <label class="col-form-label">Show: </label>
+                <label style="margin-right: 10px;margin-top: 7px;">
+                    <input type="radio" formControlName="gender" value="male"> Male
+                  </label>
+                  <label style="margin-right: 10px;margin-top: 7px;">
+                    <input type="radio" formControlName="gender" value="female"> Female
+                  </label>
+            </div>
+            <button class="btn btn-primary ms-1" type="submit">Apply filters</button>
+            <button (click)="resetFilters()" class="btn btn-info ms-1" type="button">Reset filters</button>
+
+            <div class="col">
+                <div class="btn-group float-end">
+                    <button
+                            type="button"
+                            class ="btn btn-primary"
+                            formControlName ="orderBy"
+                            (click)="sortingForm.get('orderBy')?.setValue('lastActive'); loadMembers()"
+                            btnRadio="lastActive"
+                    >Last Active</button>
+                    <button
+                            type="button"
+                            class ="btn btn-primary"
+                            formControlName ="orderBy"
+                            (click)="sortingForm.get('orderBy')?.setValue('created'); loadMembers()"
+                            btnRadio="created"
+                    >Newest Members</button>
+                </div>
+            </div>
+        </form>
+    </div>
+        @for(member of paginatedResults?.items; track member.id){
             <div class="col-2">
                 <app-member-card [member]="member"></app-member-card>
             </div>
         }
 </div>
+
+<div class="d-flex justify-content-center">
+    <pagination 
+            [boundaryLinks]="true" 
+            [itemsPerPage]="paginatedResults?.pagination?.itemsPerPage"
+            [totalItems]="paginatedResults?.pagination?.totalItems"
+            (pageChanged)="pageChanged($event)"
+            previousText="&lsaquo;" 
+            nextText="&rsaquo;" 
+            firstText="&laquo;" 
+            lastText="&raquo;">
+ 
+    </pagination>
+</div>
+
