@@ -14,8 +14,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class MemberMessagesComponent implements OnInit {
   messageGroup:FormGroup;
   @Input() userName: string;
-  @Input() messages:Message[];
-  @Output() updatedMessages = new EventEmitter<Message>();
+  //SignalR changes we can get now details directly from signal
+  // @Input() messages:Message[];
+  // @Output() updatedMessages = new EventEmitter<Message>();
   formBuilder=inject(FormBuilder);
   messageService = inject(MessageService);
 
@@ -26,11 +27,17 @@ export class MemberMessagesComponent implements OnInit {
   }
  
   SendMessage(){
-    this.messageService.sendMessage(this.userName,this.messageGroup.value.content).subscribe({
-      next: message =>{
-       this.updatedMessages.emit(message);
-       this.messageGroup.reset();
-      }
+    //Before SignalR
+    // this.messageService.sendMessage(this.userName,this.messageGroup.value.content).subscribe({
+    //   next: message =>{
+      //  this.updatedMessages.emit(message);
+    //    this.messageGroup.reset();
+    //   }
+    // })
+
+    // After SignalR
+    this.messageService.sendMessage(this.userName,this.messageGroup.value.content).then(()=> {
+        this.messageGroup.reset();
     })
   }
 }

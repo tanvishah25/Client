@@ -6,6 +6,7 @@ import { NavComponent } from "./nav/nav.component";
 import { AccountService } from './_services/account.service';
 import { HomeComponent } from './home/home.component';
 import { NgxSpinnerComponent } from 'ngx-spinner';
+import { PresenceService } from './_services/presence.service';
 
 @Component({
     selector: 'app-root',
@@ -16,6 +17,7 @@ import { NgxSpinnerComponent } from 'ngx-spinner';
 })
 export class AppComponent implements OnInit{
 private accountService = inject(AccountService);
+private presenceService = inject(PresenceService);
   constructor(private userService:UserService){}
 
   ngOnInit(): void {
@@ -26,5 +28,7 @@ private accountService = inject(AccountService);
     const userString = localStorage.getItem('user');
     if (!userString) return;
     this.accountService.currentUser.set(JSON.parse(userString));
+    //ON Page refresh also show toaster
+    this.presenceService.createHubConnection(JSON.parse(userString));
   }
 }
